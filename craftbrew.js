@@ -25,8 +25,8 @@ $(document).on("keyup", function(e) {
         case 73:/* falls through */
         case 79:/* falls through */
         case 85:
-            var lastcharacterVowelish = $(".content").text().trim().slice(-1).match(/[\u05B0-\u05BB]/);
-            if ( !lastcharacterVowelish && $(".content").text().trim().length > 0) {
+            var lastCharacterConsonantish = $(".content").text().slice(-1).match(/[\u05D0-\u05EA]/);
+            if ( lastCharacterConsonantish && $(".content").text().trim().length > 0) {
                 //we try for vowels - only if a vowel was hit and there's something there
                 buildLoop(hebrewVowelMap, e.which);
                 break;

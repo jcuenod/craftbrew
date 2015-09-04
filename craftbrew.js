@@ -1,6 +1,6 @@
 var timer;
 var loop;
-var timeout = 300;
+var timeout = 500;
 var consonants = true;
 var currentIteration = 0;
 var lastcode = 0;

@@ -3,12 +3,12 @@ body {
     background-size: 13% auto;
     background-position: left 7% top;
     background-color: #efeffe;
+    padding-top: 5%;
 }
 .content {
     text-align: center;
     font-family: "SBL Hebrew";
     font-size: 60px;
-    margin-top: 7%;
     width: 60%;
     margin: auto;
 }

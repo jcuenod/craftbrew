@@ -22,7 +22,7 @@ $(document).on("keydown", function(e) {
         case 32: //space
             $(".content").text($(".content").text().slice() + " ");
             break;
-        case 45: //hyphen
+        case 189: //minus
             $(".content").text($(".content").text().slice() + "־"); //maqaf
             break;
         case 190: //full stop

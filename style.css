@@ -45,7 +45,11 @@ body {
     text-align: center;
     left: 20%;
     right: 20%;
-    font-size: 13px;
+    font-size: 12px;
+    color: #333
+}
+.credit a {
+    color: #3a8;
 }
 
 

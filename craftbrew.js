@@ -6,14 +6,13 @@ var currentIteration = 0;
 var lastcode = 0;
 
 $(document).on("keydown", function(e) {
-    if (e.keyCode == 8) e.preventDefault();
-    if (e.which == lastcode) {
-        loop();
-        return;
-    }
     switch (e.which) {
+        case lastcode:
+            loop();
+            break;
         case 8: //backspace
             $(".content").text($(".content").text().slice(0, - 1));
+            e.preventDefault();
             break;
         case 190:
             $(".content").text($(".content").text().slice() + "ּ");

@@ -1,2 +1,2 @@
 # Craft Brew
-An intuitive way to type Hebrew! <http://jcuenod.github.io/craftbrew/>
+An intuitive way to type Hebrew! <https://jcuenod.github.io/craftbrew/>

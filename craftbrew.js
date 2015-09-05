@@ -1,9 +1,11 @@
-var timer;
+var inLoopTimer;
 var loop;
 var timeout = 600;
 var consonants = true;
 var currentIteration = 0;
 var lastcode = 0;
+var requireConsonant = false;
+var unrequireTimer;
 
 $(document).on("keydown", function(e) {
     switch (e.which) {
@@ -14,25 +16,31 @@ $(document).on("keydown", function(e) {
             $(".content").text($(".content").text().slice(0, - 1));
             e.preventDefault();
             break;
-        case 190:
+        case 9: //tab
+            unrequireConsonant();
+            break;
+        case 190: //full stop
             $(".content").text($(".content").text().slice() + "ּ");
             break;
-        case 32:
+        case 32: //space
             $(".content").text($(".content").text().slice() + " ");
             break;
-        case 65:/* falls through */
-        case 69:/* falls through */
-        case 73:/* falls through */
-        case 79:/* falls through */
+        case 65:
+        case 69:
+        case 73:
+        case 79:
         case 85:
-            var charToCheck = $(".content").text().slice(-1);
-            if (charToCheck == "\u05BC")
-                charToCheck = $(".content").text().slice(-2, -1);
-            var lastCharacterConsonantish = charToCheck.match(/[\u05D0-\u05EA]/);
-            if ( lastCharacterConsonantish && $(".content").text().trim().length > 0) {
-                //we try for vowels - only if a vowel was hit and there's something there
-                buildLoop(hebrewVowelMap, e.which);
-                break;
+            if (!requireConsonant)
+            {
+                var charToCheck = $(".content").text().slice(-1);
+                if (charToCheck == "\u05BC")
+                    charToCheck = $(".content").text().slice(-2, -1);
+                var lastCharacterConsonantish = charToCheck.match(/[\u05D0-\u05EA]/);
+                if ( lastCharacterConsonantish && $(".content").text().trim().length > 0) {
+                    //we try for vowels - only if a vowel was hit and there's something there
+                    buildLoop(hebrewVowelMap, e.which);
+                    break;
+                }
             }
             /* falls through */
         default:
@@ -56,13 +64,18 @@ function buildLoop(characterMap, keycode)
 function resetTimer(multiplier)
 {
     multiplier = multiplier > 4 ? 4 : multiplier;
-    clearTimeout(timer);
-    timer = setTimeout(endWait, timeout + 120 * multiplier);
+    clearTimeout(inLoopTimer);
+    inLoopTimer = setTimeout(function() {
+        lastcode = false;
+    }, timeout + 120 * multiplier);
 }
-function endWait()
+function unrequireConsonant()
 {
-    lastcode = false;
-    console.log("end");
+    requireConsonant = true;
+    clearTimeout(inLoopTimer);
+    unrequireTimer = setTimeout(function() {
+        requireConsonant = false;
+    }, 1500);
 }
 
 $(function(){

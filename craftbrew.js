@@ -35,7 +35,16 @@ $(document).on("keydown", function(e) {
                 var charToCheck = $(".content").text().slice(-1);
                 if (charToCheck == "\u05BC")
                     charToCheck = $(".content").text().slice(-2, -1);
-                var lastCharacterConsonantish = charToCheck.match(/[\u05D0-\u05EA]/);
+                /*
+                 * \u05D0-\u05EA = UTF8 range from Aleph to Tav
+                 *
+                 * UTF16 characters:
+                 * \uFB2A = HEBREW LETTER SHIN WITH SHIN DOT
+                 * \uFB2B = HEBREW LETTER SHIN WITH SIN
+                 *
+                 * Note also that \uFB4B = HEBREW LETTER VAV WITH HOLAM (excluded because it's a vowel)
+                 */
+                var lastCharacterConsonantish = charToCheck.match(/[\u05D0-\u05EA\uFB2A\uFB2B]/);
                 if ( lastCharacterConsonantish && $(".content").text().trim().length > 0) {
                     //we try for vowels - only if a vowel was hit and there's something there
                     buildLoop(hebrewVowelMap, e.which);

@@ -1,18 +1,17 @@
 var inLoopTimer;
 var loop;
-var timeout = 600;
-var consonants = true;
-var currentIteration = 0;
-var lastcode = 0;
+var timeout = 6000;
+var inloopCode = 0;
+var lastCode;
 var requireConsonant = false;
-var unrequireTimer;
+var justTriedAVowel = false;
 var ctrlDown = false;
 
 $(document).on("keydown", function(e) {
     if (ctrlDown)
         return;
     switch (e.which) {
-        case lastcode:
+        case inloopCode:
             loop();
             break;
         case 8: //backspace
@@ -20,7 +19,13 @@ $(document).on("keydown", function(e) {
             e.preventDefault();
             break;
         case 9: //tab
-            unrequireConsonant();
+            if (justTriedAVowel)
+            {
+                backspaceCharacter();
+                buildLoop(hebrewConsonantMap, lastCode);
+                inloopCode = 9;
+            }
+            e.preventDefault();
             break;
         case 17:
             ctrlDown = true;
@@ -65,9 +70,11 @@ $(document).on("keydown", function(e) {
                 {
                     //we try for vowels - only if a vowel was hit and there's something there
                     buildLoop(hebrewVowelMap, e.which);
+                    justTriedAVowel = true;
                     break;
                 }
             }
+            justTriedAVowel = false;
             /* falls through */
         default:
             buildLoop(hebrewConsonantMap, e.which);
@@ -79,32 +86,28 @@ $(document).on("keydown", function(e) {
 
 function buildLoop(characterMap, keycode)
 {
-    appendCharacter(characterMap[String.fromCharCode(keycode)][0]);
-    currentIteration = 0;
-    lastcode = keycode;
+    var possibleCharacters = characterMap[ String.fromCharCode(keycode) ];
+
+    appendCharacter(possibleCharacters[0]);
+    inloopCode = lastCode = keycode;
+
+    var currentIteration = 0;
     loop = function() {
         currentIteration++;
-        index = currentIteration % (characterMap[String.fromCharCode(keycode)].length);
-        replaceLastCharacter(characterMap[String.fromCharCode(keycode)][index]);
+        replaceLastCharacter(possibleCharacters[ currentIteration % (possibleCharacters.length) ]);
         resetTimer(currentIteration);
     };
-    resetTimer(0);
+    resetTimer();
 }
 function resetTimer(multiplier)
 {
+    multiplier = typeof myVar != 'undefined' ? multiplier : 0;
     multiplier = multiplier > 4 ? 4 : multiplier;
     clearTimeout(inLoopTimer);
     inLoopTimer = setTimeout(function() {
-        lastcode = false;
+        inloopCode = false;
+        console.log("done");
     }, timeout + 120 * multiplier);
-}
-function unrequireConsonant()
-{
-    requireConsonant = true;
-    clearTimeout(inLoopTimer);
-    unrequireTimer = setTimeout(function() {
-        requireConsonant = false;
-    }, 1500);
 }
 
 var lastInsertion;

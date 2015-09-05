@@ -1,6 +1,6 @@
 var inLoopTimer;
 var loop;
-var timeout = 6000;
+var timeout = 600;
 var inloopCode = 0;
 var lastCode;
 var requireConsonant = false;
@@ -31,6 +31,7 @@ $(document).on("keydown", function(e) {
             ctrlDown = true;
             break;
         case 32: //space
+            convertFinalForm();
             appendCharacter(" ");
             break;
         case 189: //minus
@@ -47,11 +48,11 @@ $(document).on("keydown", function(e) {
             if (!requireConsonant)
             {
                 var withDagesh = false;
-                var charToCheck = $(".content").text().slice(-1);
-                if (charToCheck == "\u05BC")
+                var lastChar = getLastCharacter();
+                if (lastChar == "\u05BC")
                 {
                     //if last character was a dagesh, check the previous one
-                    charToCheck = $(".content").text().slice(-2, -1);
+                    lastChar = getSecondLastCharacter();
                     withDagesh = true;
                 }
                 /*
@@ -63,10 +64,9 @@ $(document).on("keydown", function(e) {
                  *
                  * Note also that \uFB4B = HEBREW LETTER VAV WITH HOLAM (excluded because it's a vowel)
                  */
-                var lastCharacterConsonantish = charToCheck.match(/[\u05D0-\u05EA\uFB2A\uFB2B]/);
-                if ( lastCharacterConsonantish &&
+                if ( isConsonantish(lastChar) &&
                         currentText().trim().length > 0 &&
-                        !(charToCheck == "ו" && withDagesh) )
+                        !(lastChar == "ו" && withDagesh) )
                 {
                     //we try for vowels - only if a vowel was hit and there's something there
                     buildLoop(hebrewVowelMap, e.which);
@@ -110,11 +110,39 @@ function resetTimer(multiplier)
     }, timeout + 120 * multiplier);
 }
 
+function convertFinalForm()
+{
+    var finalForm = finalFormCharacterMap[getLastConsonant()];
+    if (typeof finalForm != 'undefined')
+    {
+        replaceLastConsonant(finalForm);
+    }
+}
+function getLastConsonantIndex()
+{
+    for (var n = 0; n < currentText().length; n++)
+    {
+        var currentChar = getNthLastCharacter(n);
+        if (isConsonantish(currentChar)) {
+            return currentText().length - n - 1;
+        }
+    }
+}
+function getLastConsonant()
+{
+    return getNthCharacter(getLastConsonantIndex());
+}
+function replaceLastConsonant(newCharacter)
+{
+    replaceCharacterAtIndex(newCharacter, getLastConsonantIndex());
+}
+
 var lastInsertion;
 function currentText() { return $(".content").text().slice(); }
 function appendCharacter(charToAppend)
 {
-    $(".content").text(currentText() + charToAppend);
+    var newText = currentText() + charToAppend;
+    $(".content").text(newText);
     lastInsertion = charToAppend;
 }
 function replaceLastCharacter(newChar)
@@ -124,7 +152,36 @@ function replaceLastCharacter(newChar)
 }
 function backspaceCharacter()
 {
-    $(".content").text(currentText().slice(0, - lastInsertion.length));
+    var newText = currentText().slice(0, - lastInsertion.length);
+    $(".content").text(newText);
+}
+function replaceCharacterAtIndex(newChar, index)
+{
+    var newText = currentText().slice(0, index) + newChar + currentText().slice(index + 1);
+    $(".content").text(newText);
+}
+function getNthCharacter(n)
+{
+    return currentText().slice(n, n + 1);
+}
+function getLastCharacter()
+{
+    return getNthLastCharacter(0);
+}
+function getSecondLastCharacter()
+{
+    return getNthLastCharacter(1);
+}
+function getNthLastCharacter(n)
+{
+    if (n === 0)
+        return currentText().slice(-1);
+    return currentText().slice(-n - 1, -n);
+}
+
+function isConsonantish(char)
+{
+    return char.match(/[\u05D0-\u05EA\uFB2A\uFB2B]/);
 }
 
 $(function(){

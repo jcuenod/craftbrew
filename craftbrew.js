@@ -35,7 +35,7 @@ $(document).on("keydown", function(e) {
         case 85:
             if (!requireConsonant)
             {
-                var withDagesh = false
+                var withDagesh = false;
                 var charToCheck = $(".content").text().slice(-1);
                 if (charToCheck == "\u05BC")
                 {

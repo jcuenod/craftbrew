@@ -54,7 +54,7 @@ body {
 
 
 /* Stolen for modal help thing */
-#modalBackground {
+.modalBackground {
     display: none;
     position: fixed;
     top: 0;
@@ -65,7 +65,7 @@ body {
     z-index: 1000;
 }
 
-#modalContent {
+.modalContent {
     background-color: white;
     border-radius: 10px;
     border: 2px solid #ddd;
@@ -83,6 +83,6 @@ body {
     z-index: 1000;
 }
 
-#modalBackground, #modalContent {
+.modalBackground, .modalContent {
     display: block;
 }​

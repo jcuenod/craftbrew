@@ -67,8 +67,8 @@ function endWait()
 }
 
 $(function(){
-    $(".modalTrigger, #modalBackground, #modalClose").click(function() {
-        $("#modalContent, #modalBackground").fadeToggle();
+    $(".modalTrigger, .modalBackground, .modalClose").click(function() {
+        $(".modalContent, .modalBackground").fadeToggle();
     });
-    $("#modalContent, #modalBackground").hide();
+    $(".modalContent, .modalBackground").hide();
 });

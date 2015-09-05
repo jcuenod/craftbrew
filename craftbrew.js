@@ -35,9 +35,14 @@ $(document).on("keydown", function(e) {
         case 85:
             if (!requireConsonant)
             {
+                var withDagesh = false
                 var charToCheck = $(".content").text().slice(-1);
                 if (charToCheck == "\u05BC")
+                {
+                    //if last character was a dagesh, check the previous one
                     charToCheck = $(".content").text().slice(-2, -1);
+                    withDagesh = true;
+                }
                 /*
                  * \u05D0-\u05EA = UTF8 range from Aleph to Tav
                  *
@@ -48,7 +53,10 @@ $(document).on("keydown", function(e) {
                  * Note also that \uFB4B = HEBREW LETTER VAV WITH HOLAM (excluded because it's a vowel)
                  */
                 var lastCharacterConsonantish = charToCheck.match(/[\u05D0-\u05EA\uFB2A\uFB2B]/);
-                if ( lastCharacterConsonantish && $(".content").text().trim().length > 0) {
+                if ( lastCharacterConsonantish &&
+                        $(".content").text().trim().length > 0 &&
+                        !(charToCheck == "ו" && withDagesh) )
+                {
                     //we try for vowels - only if a vowel was hit and there's something there
                     buildLoop(hebrewVowelMap, e.which);
                     break;

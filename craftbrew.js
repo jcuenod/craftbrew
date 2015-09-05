@@ -6,27 +6,33 @@ var currentIteration = 0;
 var lastcode = 0;
 var requireConsonant = false;
 var unrequireTimer;
+var ctrlDown = false;
 
 $(document).on("keydown", function(e) {
+    if (ctrlDown)
+        return;
     switch (e.which) {
         case lastcode:
             loop();
             break;
         case 8: //backspace
-            $(".content").text($(".content").text().slice(0, - 1));
+            backspaceCharacter();
             e.preventDefault();
             break;
         case 9: //tab
             unrequireConsonant();
             break;
+        case 17:
+            ctrlDown = true;
+            break;
         case 32: //space
-            $(".content").text($(".content").text().slice() + " ");
+            appendCharacter(" ");
             break;
         case 189: //minus
-            $(".content").text($(".content").text().slice() + "־"); //maqaf
+            appendCharacter("־"); //maqaf
             break;
         case 190: //full stop
-            $(".content").text($(".content").text().slice() + "ּ"); //dagesh
+            appendCharacter("ּ"); //dagesh
             break;
         case 65:
         case 69:
@@ -54,7 +60,7 @@ $(document).on("keydown", function(e) {
                  */
                 var lastCharacterConsonantish = charToCheck.match(/[\u05D0-\u05EA\uFB2A\uFB2B]/);
                 if ( lastCharacterConsonantish &&
-                        $(".content").text().trim().length > 0 &&
+                        currentText().trim().length > 0 &&
                         !(charToCheck == "ו" && withDagesh) )
                 {
                     //we try for vowels - only if a vowel was hit and there's something there
@@ -66,17 +72,20 @@ $(document).on("keydown", function(e) {
         default:
             buildLoop(hebrewConsonantMap, e.which);
     }
+}).on("keyup", function(e) {
+    if (e.which == 17)
+        ctrlDown = false;
 });
 
 function buildLoop(characterMap, keycode)
 {
-    $(".content").text($(".content").text() + characterMap[String.fromCharCode(keycode)][0]);
+    appendCharacter(characterMap[String.fromCharCode(keycode)][0]);
     currentIteration = 0;
     lastcode = keycode;
     loop = function() {
         currentIteration++;
         index = currentIteration % (characterMap[String.fromCharCode(keycode)].length);
-        $(".content").text($(".content").text().slice(0, - 1) + characterMap[String.fromCharCode(keycode)][index]);
+        replaceLastCharacter(characterMap[String.fromCharCode(keycode)][index]);
         resetTimer(currentIteration);
     };
     resetTimer(0);
@@ -96,6 +105,23 @@ function unrequireConsonant()
     unrequireTimer = setTimeout(function() {
         requireConsonant = false;
     }, 1500);
+}
+
+var lastInsertion;
+function currentText() { return $(".content").text().slice(); }
+function appendCharacter(charToAppend)
+{
+    $(".content").text(currentText() + charToAppend);
+    lastInsertion = charToAppend;
+}
+function replaceLastCharacter(newChar)
+{
+    backspaceCharacter();
+    appendCharacter(newChar);
+}
+function backspaceCharacter()
+{
+    $(".content").text(currentText().slice(0, - lastInsertion.length));
 }
 
 $(function(){

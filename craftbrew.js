@@ -22,8 +22,11 @@ $(document).on("keydown", function(e) {
         case 32: //space
             $(".content").text($(".content").text().slice() + " ");
             break;
+        case 45: //hyphen
+            $(".content").text($(".content").text().slice() + "־"); //maqaf
+            break;
         case 190: //full stop
-            $(".content").text($(".content").text().slice() + "ּ");
+            $(".content").text($(".content").text().slice() + "ּ"); //dagesh
             break;
         case 65:
         case 69:

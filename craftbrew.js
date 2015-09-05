@@ -19,11 +19,11 @@ $(document).on("keydown", function(e) {
         case 9: //tab
             unrequireConsonant();
             break;
-        case 190: //full stop
-            $(".content").text($(".content").text().slice() + "ּ");
-            break;
         case 32: //space
             $(".content").text($(".content").text().slice() + " ");
+            break;
+        case 190: //full stop
+            $(".content").text($(".content").text().slice() + "ּ");
             break;
         case 65:
         case 69:

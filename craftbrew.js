@@ -1,11 +1,12 @@
 var timer;
 var loop;
-var timeout = 500;
+var timeout = 600;
 var consonants = true;
 var currentIteration = 0;
 var lastcode = 0;
 
-$(document).on("keyup", function(e) {
+$(document).on("keydown", function(e) {
+    if (e.keyCode == 8) e.preventDefault();
     if (e.which == lastcode) {
         loop();
         return;
@@ -64,3 +65,10 @@ function endWait()
     lastcode = false;
     console.log("end");
 }
+
+$(function(){
+    $(".modalTrigger, #modalBackground, #modalClose").click(function() {
+        $("#modalContent, #modalBackground").fadeToggle();
+    });
+    $("#modalContent, #modalBackground").hide();
+});

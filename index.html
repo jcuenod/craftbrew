@@ -12,14 +12,23 @@
 
 <body>
     <div class="content"></div>
-    <script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>
-    <input id="target" type="text" style="position: absolute; top: -100px;" />
-
-    <script type="text/javascript">
-        $(document).keydown(function(e) {
-            if (e.keyCode == 8) $('#target').focus();
-        });
-    </script>
+    <div class="modalTrigger">?</div>
+    <div class="credit">
+        Built for crafting good brew by <a href="mailto:j3frea+craftbrew@gmail.com">James Cuénod</a>
+    </div>
+    <div id="modalBackground"></div>
+    <div id="modalContent">
+        <h1>Help Brew!</h1>
+        <p>
+            Don't worry, this whole thing is designed to be super easy.<br />Even so, here are some things to keep in mind.
+        </p>
+        <ul>
+            <li><b>Usage:</b> Type whatever you want; the system should automagically guess what you want. If it gets the guess wrong, hit the same letter again and you will loop through the alternate options.</li>
+            <li><b>Font:</b> We're using unicode (which is good) but you'll need a font that supports it - we recommend SBL Hebrew.</li>
+            <li><b>Dagesh:</b> It's easy, just use the fullstop.</li>
+            <li><b>Shuruq:</b> The right way to insert a shuruq is by using a vav/waw and adding a dagesh.</li>
+        </ul>
+    </div>​
 </body>
 
 </html>

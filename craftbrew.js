@@ -189,4 +189,9 @@ $(function(){
         $(".modalContent, .modalBackground").fadeToggle();
     });
     $(".modalContent, .modalBackground").hide();
+
+    if (!FontDetect.isFontLoaded('SBL Hebrew'))
+    {   // Assume we fell back to Verdana, so adjust the column width.
+        alert("You don't have to, but we strongly recommend installing the SBL Hebrew Font (see the help for more information)");
+    }
 });

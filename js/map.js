@@ -35,10 +35,21 @@ var hebrewVowelMap = {
 	"U": ["ֻ", "ו"],
 }
 
-var finalFormCharacterMap = {
+var finalFormMap = {
     "כ": "ך",
     "מ": "ם",
     "פ": "ף",
     "נ": "ן",
     "צ": "ץ",
 }
+
+function invertObject(obj)
+{
+    var result = {};
+    var keys = Object.keys(obj);
+    for (var i = 0, length = keys.length; i < length; i++) {
+      result[obj[keys[i]]] = keys[i];
+    }
+    return result;
+}
+var invertedFinalFormMap = invertObject(finalFormMap);

@@ -3,7 +3,6 @@ var loop;
 var timeout = 600;
 var inloopCode = 0;
 var lastCode;
-var requireConsonant = false;
 var justTriedAVowel = false;
 var ctrlDown = false;
 
@@ -31,7 +30,6 @@ $(document).on("keydown", function(e) {
             ctrlDown = true;
             break;
         case 32: //space
-            convertFinalForm();
             appendCharacter(" ");
             break;
         case 189: //minus
@@ -45,40 +43,39 @@ $(document).on("keydown", function(e) {
         case 73:
         case 79:
         case 85:
-            if (!requireConsonant)
+            var withDagesh = false;
+            var lastChar = getLastCharacter();
+            if (lastChar == "\u05BC")
             {
-                var withDagesh = false;
-                var lastChar = getLastCharacter();
-                if (lastChar == "\u05BC")
-                {
-                    //if last character was a dagesh, check the previous one
-                    lastChar = getSecondLastCharacter();
-                    withDagesh = true;
-                }
-                /*
-                 * \u05D0-\u05EA = UTF8 range from Aleph to Tav
-                 *
-                 * UTF16 characters:
-                 * \uFB2A = HEBREW LETTER SHIN WITH SHIN DOT
-                 * \uFB2B = HEBREW LETTER SHIN WITH SIN
-                 *
-                 * Note also that \uFB4B = HEBREW LETTER VAV WITH HOLAM (excluded because it's a vowel)
-                 */
-                if ( isConsonantish(lastChar) &&
-                        currentText().trim().length > 0 &&
-                        !(lastChar == "ו" && withDagesh) )
-                {
-                    //we try for vowels - only if a vowel was hit and there's something there
-                    buildLoop(hebrewVowelMap, e.which);
-                    justTriedAVowel = true;
-                    break;
-                }
+                //if last character was a dagesh, check the previous one
+                lastChar = getSecondLastCharacter();
+                withDagesh = true;
+            }
+            /*
+             * \u05D0-\u05EA = UTF8 range from Aleph to Tav
+             *
+             * UTF16 characters:
+             * \uFB2A = HEBREW LETTER SHIN WITH SHIN DOT
+             * \uFB2B = HEBREW LETTER SHIN WITH SIN
+             *
+             * Note also that \uFB4B = HEBREW LETTER VAV WITH HOLAM (excluded because it's a vowel)
+             */
+            if ( isConsonantish(lastChar) &&
+                    currentText().trim().length > 0 &&
+                    !(lastChar == "ו" && withDagesh) )
+            {
+                //we try for vowels - only if a vowel was hit and there's something there
+                buildLoop(hebrewVowelMap, e.which);
+                justTriedAVowel = true;
+                break;
             }
             justTriedAVowel = false;
             /* falls through */
         default:
             buildLoop(hebrewConsonantMap, e.which);
     }
+    //no matter what, just do this check...
+    convertFinalForm();
 }).on("keyup", function(e) {
     if (e.which == 17)
         ctrlDown = false;
@@ -112,12 +109,22 @@ function resetTimer(multiplier)
 
 function convertFinalForm()
 {
-    var finalForm = finalFormCharacterMap[getLastConsonant()];
+    var finalForm = finalFormMap[getLastConsonant()];
+    var midtextForm = invertedFinalFormMap[getSecondLastConsonant()];
     if (typeof finalForm != 'undefined')
     {
-        replaceLastConsonant(finalForm);
+        replaceCharacterAtIndex(finalForm, getLastConsonantIndex());
+    }
+    if (typeof midtextForm != 'undefined')
+    {
+        var charactersBetweenLastConsonants = currentText().slice(getSecondLastConsonantIndex(), getLastConsonantIndex());
+        if (!charactersBetweenLastConsonants.match(/\ /))
+        {
+            replaceCharacterAtIndex(midtextForm, getSecondLastConsonantIndex());
+        }
     }
 }
+
 function getLastConsonantIndex()
 {
     for (var n = 0; n < currentText().length; n++)
@@ -132,9 +139,19 @@ function getLastConsonant()
 {
     return getNthCharacter(getLastConsonantIndex());
 }
-function replaceLastConsonant(newCharacter)
+function getSecondLastConsonantIndex()
 {
-    replaceCharacterAtIndex(newCharacter, getLastConsonantIndex());
+    for (var n = getLastConsonantIndex() - 1; n >= 0; n--)
+    {
+        var currentChar = getNthCharacter(n);
+        if (isConsonantish(currentChar)) {
+            return n;
+        }
+    }
+}
+function getSecondLastConsonant()
+{
+    return getNthCharacter(getSecondLastConsonantIndex());
 }
 
 var lastInsertion;

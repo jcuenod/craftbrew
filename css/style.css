@@ -82,6 +82,10 @@ body {
     top: 10%;
     width: 50%;
     z-index: 1000;
+    overflow: auto;
+}
+.modalContent h1 {
+    margin: 0 0 0.1em 0;
 }
 
 .modalBackground, .modalContent {

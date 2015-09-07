@@ -14,9 +14,9 @@ $(document).on("keydown", function(e) {
             loop();
             break;
         case 8: //backspace
+            e.preventDefault();
             lastCode.pop();
             backspaceCharacter();
-            e.preventDefault();
             break;
         case 9: //tab
             if (justTriedAVowel)
@@ -84,19 +84,22 @@ $(document).on("keydown", function(e) {
 
 function buildLoop(characterMap, keycode)
 {
-    var possibleCharacters = characterMap[ String.fromCharCode(keycode) ];
+    if (String.fromCharCode(keycode) in characterMap)
+    {
+        var possibleCharacters = characterMap[ String.fromCharCode(keycode) ];
 
-    appendCharacter(possibleCharacters[0]);
-    inloopCode = keycode;
-    lastCode.push(keycode);
+        appendCharacter(possibleCharacters[0]);
+        inloopCode = keycode;
+        lastCode.push(keycode);
 
-    var currentIteration = 0;
-    loop = function() {
-        currentIteration++;
-        replaceLastCharacter(possibleCharacters[ currentIteration % (possibleCharacters.length) ]);
-        resetTimer(currentIteration);
-    };
-    resetTimer();
+        var currentIteration = 0;
+        loop = function() {
+            currentIteration++;
+            replaceLastCharacter(possibleCharacters[ currentIteration % (possibleCharacters.length) ]);
+            resetTimer(currentIteration);
+        };
+        resetTimer();
+    }
 }
 function resetTimer(multiplier)
 {
@@ -170,6 +173,8 @@ function replaceLastCharacter(newChar)
 }
 function backspaceCharacter()
 {
+    if (currentText().trim().length === 0)
+        return;
     var newText = currentText().slice(0, - lastInsertion.pop().length);
     $(".content").text(newText);
 }

@@ -2,7 +2,7 @@ var inLoopTimer;
 var loop;
 var timeout = 600;
 var inloopCode = 0;
-var lastCode;
+var lastCode = [];
 var justTriedAVowel = false;
 var ctrlDown = false;
 
@@ -14,6 +14,7 @@ $(document).on("keydown", function(e) {
             loop();
             break;
         case 8: //backspace
+            lastCode.pop();
             backspaceCharacter();
             e.preventDefault();
             break;
@@ -21,7 +22,7 @@ $(document).on("keydown", function(e) {
             if (justTriedAVowel)
             {
                 backspaceCharacter();
-                buildLoop(hebrewConsonantMap, lastCode);
+                buildLoop(hebrewConsonantMap, lastCode.pop());
                 inloopCode = 9;
             }
             e.preventDefault();
@@ -86,7 +87,8 @@ function buildLoop(characterMap, keycode)
     var possibleCharacters = characterMap[ String.fromCharCode(keycode) ];
 
     appendCharacter(possibleCharacters[0]);
-    inloopCode = lastCode = keycode;
+    inloopCode = keycode;
+    lastCode.push(keycode);
 
     var currentIteration = 0;
     loop = function() {
@@ -103,7 +105,6 @@ function resetTimer(multiplier)
     clearTimeout(inLoopTimer);
     inLoopTimer = setTimeout(function() {
         inloopCode = false;
-        console.log("done");
     }, timeout + 120 * multiplier);
 }
 
@@ -154,13 +155,13 @@ function getSecondLastConsonant()
     return getNthCharacter(getSecondLastConsonantIndex());
 }
 
-var lastInsertion;
+var lastInsertion = [];
 function currentText() { return $(".content").text().slice(); }
 function appendCharacter(charToAppend)
 {
     var newText = currentText() + charToAppend;
     $(".content").text(newText);
-    lastInsertion = charToAppend;
+    lastInsertion.push(charToAppend);
 }
 function replaceLastCharacter(newChar)
 {
@@ -169,7 +170,7 @@ function replaceLastCharacter(newChar)
 }
 function backspaceCharacter()
 {
-    var newText = currentText().slice(0, - lastInsertion.length);
+    var newText = currentText().slice(0, - lastInsertion.pop().length);
     $(".content").text(newText);
 }
 function replaceCharacterAtIndex(newChar, index)

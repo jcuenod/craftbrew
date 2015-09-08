@@ -40,6 +40,9 @@ function TextModel (options) {
             var t = options.beforeTextChange(new TextModel({startingText: newText}));
             newText = t.getCurrentText();
         }
+        //prevent leading spaces (which are just dumb)
+        if (newText.trim().length === 0)
+            newText = "";
         this.currentText = newText;
         if (typeof options.onTextChange != 'undefined')
             options.onTextChange(newText);

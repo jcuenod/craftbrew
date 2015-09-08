@@ -69,7 +69,7 @@ function HebrewEditor(editorBox) {
         if (t.getNthCharacter($that.getNthLastConsonantIndex(1, t)) in invertedFinalFormMap)
         {
             var charactersBetweenLastConsonants = t.getCurrentText().slice($that.getNthLastConsonantIndex(1, t), $that.getNthLastConsonantIndex(0, t));
-            if (!charactersBetweenLastConsonants.match(/\ /))
+            if (!charactersBetweenLastConsonants.match(/[\ ־]/))
             {
                 t.replaceNthCharacter(invertedFinalFormMap[t.getNthCharacter($that.getNthLastConsonantIndex(1, t))], $that.getNthLastConsonantIndex(1, t));
             }

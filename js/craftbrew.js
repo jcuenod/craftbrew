@@ -13,9 +13,9 @@ $(function(){
     });
     $(".modalContent, .modalBackground").hide();
 
-    if (!FontDetect.isFontLoaded('SBL Hebrew'))
+    if (!FontDetect.isFontLoaded('SBL BibLit'))
     {   // Assume we fell back to Verdana, so adjust the column width.
-        alert("You don't have to, but we strongly recommend installing the SBL Hebrew Font (see the help for more information)");
+        alert("You don't have to, but we strongly recommend installing the SBL BibLit font (see the help for more information)");
     }
 
     hebrewEditor = new HebrewEditor($(".content"));

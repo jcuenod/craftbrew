@@ -2,6 +2,11 @@ function TextModel (options) {
     this.currentText = options.startingText || "";
     this.lastInsertion = [];
 
+    this.clear = function() {
+        this.setCurrentText("");
+        this.lastInsertion = [];
+    };
+
     this.appendCharacter = function(charToAppend) {
         this.setCurrentText(this.currentText + charToAppend);
         this.lastInsertion.push(charToAppend);

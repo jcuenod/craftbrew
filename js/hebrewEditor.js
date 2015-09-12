@@ -9,6 +9,13 @@ function HebrewEditor(editorBox) {
     this.replaceLastCharacter = function(newChar){
         this.textModel.replaceLastCharacter(newChar);
     };
+    this.getCurrentText = function() {
+        return this.textModel.getCurrentText().trim();
+    };
+
+    this.clear = function() {
+        this.textModel.clear();
+    };
 
     this.endsVowelishly = function() {
         var withDagesh = false;

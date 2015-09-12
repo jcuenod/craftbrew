@@ -8,6 +8,8 @@ var ctrlDown = false;
 var hebrewEditor;
 
 $(function(){
+    // var isIe = (navigator.userAgent.toLowerCase().indexOf("msie") != -1 || navigator.userAgent.toLowerCase().indexOf("trident") != -1);
+
     $(".modalTrigger, .modalBackground, .modalClose").click(function() {
         $(".modalContent, .modalBackground").fadeToggle();
     });
@@ -51,7 +53,7 @@ $(function(){
 
     $(document).on("keydown", function(e) {
         if (ctrlDown)
-            return;
+            return true;
         switch (e.which) {
             case inloopCode:
                 loop();
@@ -102,5 +104,31 @@ $(function(){
     }).on("keyup", function(e) {
         if (e.which == 17)
             ctrlDown = false;
+    });
+    var isIe = (navigator.userAgent.toLowerCase().indexOf("msie") != -1 || navigator.userAgent.toLowerCase().indexOf("trident") != -1);
+    var getSelectedText = function() {
+        if (window.getSelection) {
+            return window.getSelection().toString();
+        } else if (document.selection) {
+            return document.selection.createRange().text;
+        }
+        return '';
+    };
+    var sendToClipBoard = function (e) {
+        var textToPutOnClipboard = getSelectedText() || hebrewEditor.getCurrentText();
+        if (isIe) {
+            window.clipboardData.setData('Text', textToPutOnClipboard);
+        } else {
+            e.clipboardData.setData('text/plain', textToPutOnClipboard);
+        }
+        e.preventDefault();
+    };
+    document.addEventListener('copy', function(e) {
+        sendToClipBoard(e);
+    });
+    document.addEventListener('cut', function(e) {
+        sendToClipBoard(e);
+        hebrewEditor.clear();
+        lastCode = [];
     });
 });

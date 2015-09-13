@@ -8,15 +8,13 @@ var ctrlDown = false;
 var hebrewEditor;
 
 $(function(){
-    // var isIe = (navigator.userAgent.toLowerCase().indexOf("msie") != -1 || navigator.userAgent.toLowerCase().indexOf("trident") != -1);
-
     $(".modalTrigger, .modalBackground, .modalClose").click(function() {
         $(".modalContent, .modalBackground").fadeToggle();
     });
     $(".modalContent, .modalBackground").hide();
 
     if (!FontDetect.isFontLoaded('SBL BibLit'))
-    {   // Assume we fell back to Verdana, so adjust the column width.
+    {
         alert("You don't have to, but we strongly recommend installing the SBL BibLit font (see the help for more information)");
     }
 

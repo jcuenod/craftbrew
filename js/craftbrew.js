@@ -128,7 +128,10 @@ $(function(){
     });
     document.addEventListener('cut', function(e) {
         sendToClipBoard(e);
-        hebrewEditor.clear();
-        lastCode = [];
+        if (!getSelectedText())
+        {
+            hebrewEditor.clear();
+            lastCode = [];
+        }
     });
 });

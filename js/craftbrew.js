@@ -76,6 +76,12 @@ $(function(){
             case 32: //space
                 hebrewEditor.appendCharacter(" ");
                 break;
+            case 186: //semi-colon
+                hebrewEditor.appendCharacter("׃"); //sof pasuq
+                break;
+            case 188: //comma
+                hebrewEditor.appendCharacter("֫"); //accent (ole)
+                break;
             case 189: //minus
                 hebrewEditor.appendCharacter("־"); //maqaf
                 break;

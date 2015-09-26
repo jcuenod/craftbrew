@@ -76,11 +76,14 @@ body {
     -webkit-box-shadow: 0 0 20px 0 #fff;
     -moz-box-shadow: 0 0 20px 0 #fff;
     display: none;
-    left: 25%;
     padding: 30px;
-    position: fixed;
+    margin: 0 auto;
+    position: absolute;
     top: 10%;
-    width: 50%;
+    left: 0;
+    right: 0;
+    width: 60%;
+    min-width: 500px;
     z-index: 1000;
     overflow: auto;
 }

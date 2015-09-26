@@ -1,7 +1,23 @@
 function HebrewEditor(editorBox) {
     var $that = this;
+    var wordBreakingCharacters=/[\ ־׃]/;
+
     this.appendCharacter = function(newChar){
         this.textModel.appendCharacter(newChar);
+    };
+    this.appendCombinedCharacter = function(newChar){
+        var lastConsonantIndex = this.getNthLastConsonantIndex(0, $.extend(true, {}, this.textModel));
+        if (this.textModel.getCurrentText().slice(lastConsonantIndex).match(wordBreakingCharacters) || this.textModel.getCurrentText().trim().length === 0)
+            return false;
+
+        for (var i = this.textModel.getLength() - 1; i > lastConsonantIndex; i--)
+        {
+            if (this.textModel.getNthCharacter(i) == newChar)
+            {
+                return false;
+            }
+        }
+        this.appendCharacter(newChar);
     };
     this.removeLastCharacter = function(){
         this.textModel.removeLastCharacter();
@@ -84,7 +100,7 @@ function HebrewEditor(editorBox) {
         if (t.getNthCharacter($that.getNthLastConsonantIndex(1, t)) in invertedFinalFormMap)
         {
             var charactersBetweenLastConsonants = t.getCurrentText().slice($that.getNthLastConsonantIndex(1, t), $that.getNthLastConsonantIndex(0, t));
-            if (!charactersBetweenLastConsonants.match(/[\ ־׃]/))
+            if (!charactersBetweenLastConsonants.match(wordBreakingCharacters))
             {
                 t.replaceNthCharacter(invertedFinalFormMap[t.getNthCharacter($that.getNthLastConsonantIndex(1, t))], $that.getNthLastConsonantIndex(1, t));
             }

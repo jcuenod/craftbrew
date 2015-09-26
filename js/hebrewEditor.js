@@ -24,7 +24,7 @@ function HebrewEditor(editorBox) {
     var ignoreForVowelishness = ["\u05BC", "\u05AB"];
     this.endsVowelishly = function(textModelToCheck, withDagesh) {
         if (typeof textModelToCheck == "undefined")
-            textModelToCheck = $.extend({}, this.textModel);
+            textModelToCheck = $.extend(true, {}, this.textModel);
         var lastChar = textModelToCheck.getNthCharacter(textModelToCheck.getLength() - 1);
 
         if ($.inArray(lastChar, ignoreForVowelishness) != -1)

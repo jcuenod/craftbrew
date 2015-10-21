@@ -13,7 +13,7 @@ $(function(){
     });
     $(".modalContent, .modalBackground").hide();
 
-    if (!FontDetect.isFontLoaded('SBL BibLit'))
+    if (!FontDetect.isFontLoaded('SBL BibLit') && !FontDetect.isFontLoaded('SBL Hebrew'))
     {
         alert("You don't have to, but we strongly recommend installing the SBL BibLit font (see the help for more information)");
     }

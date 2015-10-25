@@ -73,6 +73,9 @@ $(function(){
             case 17:
                 ctrlDown = true;
                 break;
+            case 27: //escape
+                $(".modalContent, .modalBackground").fadeToggle();
+                break;
             case 32: //space
                 hebrewEditor.appendCharacter(" ");
                 break;
@@ -80,13 +83,13 @@ $(function(){
                 hebrewEditor.appendCharacter("׃"); //sof pasuq
                 break;
             case 188: //comma
-                hebrewEditor.appendCharacter("֫"); //accent (ole)
+                hebrewEditor.appendCombinedCharacter("֫"); //accent (ole)
                 break;
             case 189: //minus
                 hebrewEditor.appendCharacter("־"); //maqaf
                 break;
             case 190: //full stop
-                hebrewEditor.appendCharacter("ּ"); //dagesh
+                hebrewEditor.appendCombinedCharacter("ּ"); //dagesh
                 break;
             case 65:
             case 69:

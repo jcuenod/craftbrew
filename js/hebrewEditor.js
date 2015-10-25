@@ -61,12 +61,12 @@ function HebrewEditor(editorBox) {
              */
             return ( this.isConsonantish(lastChar) &&
                    textModelToCheck.getCurrentText().trim().length > 0 &&
-                   !(lastChar == "ו" && withDagesh) );
+                   !(lastChar == "ו" && withDagesh) && (lastChar != "\uFB4B") );
         }
     };
     this.isConsonantish = function(char)
     {
-        return char.match(/[\u05D0-\u05EA\uFB2A\uFB2B]/);
+        return char.match(/[\u05D0-\u05EA\uFB2A\uFB2B\uFB4B]/);
     };
     this.getNthLastConsonantIndex = function(n, t) //t = temporaryTextModel
     {

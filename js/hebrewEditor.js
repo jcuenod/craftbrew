@@ -45,13 +45,13 @@ function HebrewEditor(editorBox) {
              */
             return ( this.isConsonantish(lastChar) &&
                    textModelToCheck.getCurrentText().trim().length > 0 &&
-                   !(lastChar == "ו" && withDagesh) );
+                   !(lastChar == "ו" && withDagesh) && !(lastChar == "\uFB4B") );
         }
     };
 
     this.isConsonantish = function(char)
     {
-        return char.match(/[\u05D0-\u05EA\uFB2A\uFB2B]/);
+        return char.match(/[\u05D0-\u05EA\uFB2A\uFB2B\uFB4B]/);
     };
     this.getNthLastConsonantIndex = function(n, t) //t = temporaryTextModel
     {
@@ -85,7 +85,7 @@ function HebrewEditor(editorBox) {
         if (t.getNthCharacter($that.getNthLastConsonantIndex(1, t)) in invertedFinalFormMap)
         {
             var charactersBetweenLastConsonants = t.getCurrentText().slice($that.getNthLastConsonantIndex(1, t), $that.getNthLastConsonantIndex(0, t));
-            if (!charactersBetweenLastConsonants.match(/[\ ־]/) || charactersBetweenLastConsonants.match(/\uFB4B/))
+            if (!charactersBetweenLastConsonants.match(/[\ ־]/))
             {
                 t.replaceNthCharacter(invertedFinalFormMap[t.getNthCharacter($that.getNthLastConsonantIndex(1, t))], $that.getNthLastConsonantIndex(1, t));
             }

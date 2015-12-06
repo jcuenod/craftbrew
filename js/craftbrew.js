@@ -54,7 +54,14 @@ $(function(){
             return true;
         switch (e.which) {
             case inloopCode:
-                loop();
+                //check whether there are multiple characters for this button...
+                //note: not a full map - vowels overwrite consonants
+                var mixedMap;
+                mixedMap = $.extend(mixedMap, hebrewConsonantMap, hebrewVowelMap);
+                if (mixedMap[String.fromCharCode(e.which)].length > 1)
+                    loop();
+                else
+                    buildLoop(hebrewConsonantMap, e.which);
                 break;
             case 8: //backspace
                 e.preventDefault();
